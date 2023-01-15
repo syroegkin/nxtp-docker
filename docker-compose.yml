@@ -6,4 +6,4 @@ services:
     build: .
     container_name: nxtp_server
     ports:
-      - "127.0.0.1:12300:12300"
+      - "12300:12300"
