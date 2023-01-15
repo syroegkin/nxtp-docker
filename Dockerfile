@@ -4,13 +4,11 @@ EXPOSE 12300
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
-COPY ["nxtp/src/core/NxtpServer/NxtpServer.csproj", "NxtpServer/"]
-COPY ["nxtp/src/core/NxtpData/NxtpData.csproj", "NxtpData/"]
-RUN dotnet restore "NxtpServer/NxtpServer.csproj"
-COPY nxtp/src/core/NxtpServer ./NxtpServer
-COPY nxtp/src/core/NxtpData ./NxtpData
+RUN apt-get update && apt-get install git -y
+RUN git clone --depth 1 --branch v1.65 https://github.com/Threetwosevensixseven/nxtp.git
+RUN dotnet restore "nxtp/src/core/NxtpServer/NxtpServer.csproj"
 
-WORKDIR "/src/NxtpServer"
+WORKDIR "/src/nxtp/src/core/NxtpServer"
 RUN dotnet build "NxtpServer.csproj" -c Release -o /app/build
 
 FROM build AS publish
